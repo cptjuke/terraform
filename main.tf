@@ -92,11 +92,11 @@ azurerm_network_interface.nic.id
 ]
 
 
-#Llave ssh
-#admin_ssh_key {
-#  username = "jccalvo"
-#  public_key = file("C:/terraform-first-fresh-try/id_rsa.pub")
-#}
+#Llave ssh generarla con key autogen y fijarse bien en el archivo que colocamos, el admin_username de la maquina virtual y el username deben coincidir
+admin_ssh_key {
+  username = "jccalvo"
+  public_key = file("C:/terraform-first-fresh-try/id_rsa.pub")
+}
 
 os_disk {
 	caching = "ReadWrite"
@@ -105,15 +105,16 @@ os_disk {
 }
 
 
-os_profile {
-computer_name  = "maquinalinux"
-admin_username = "intermark"
-admin_password = "Intermark96"
-}
+#Experimento para otro metodo de conexión (no sale bien)	
+#os_profile {
+#computer_name  = "maquinalinux"
+#admin_username = "intermark"
+#admin_password = "Intermark96"
+#}
 
-os_profile_linux_config {
-disable_password_authentication = false
-}
+#os_profile_linux_config {
+#disable_password_authentication = false
+#}
 
 
 #Imagen del sistema operativo
