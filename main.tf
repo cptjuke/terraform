@@ -1,4 +1,4 @@
-#Proveedor y version
+#Version and Providers
 terraform {
 required_providers {
 	azurerm = {
@@ -8,19 +8,19 @@ required_providers {
 	}
 }
 
-#Configuracion de Azure
+#Azure configuration
 provider "azurerm" {
 features {}
 }
 
-#Crear un grupo de recursos
+#Create a resource group
 resource "azurerm_resource_group" "gruporecursos" {
 name = "gruporecursos"
 location = "West Europe"
 }
 
 
-#Crear una red virtual
+#Create a virtual network
 resource "azurerm_virtual_network" "redvirtual" {
 name = "redvirtual"
 address_space = ["10.0.0.0/16"]
@@ -28,7 +28,7 @@ location = "West Europe"
 resource_group_name = azurerm_resource_group.gruporecursos.name
 }
 
-#Crear una subred virtual
+#Create a subnet
 resource "azurerm_subnet" "subred" {
 name = "redinterna"
 resource_group_name = azurerm_resource_group.gruporecursos.name
@@ -36,7 +36,7 @@ virtual_network_name = azurerm_virtual_network.redvirtual.name
 address_prefixes = ["10.0.0.0/24"]
 }
 
-#Crear IPs publicas
+#Create public IPs
 resource "azurerm_public_ip" "ip_publica" {
 	name = "ippublica"
 	location = "West Europe"
@@ -45,13 +45,13 @@ resource "azurerm_public_ip" "ip_publica" {
 }
 
 
-#Crear grupo de seguridad de la red y reglas de acceso
+#Create network security group and access rules
 resource "azurerm_network_security_group" "gruposeg" {
 	name = "grupodeseguridad"
 	location = "West Europe"
 	resource_group_name = azurerm_resource_group.gruporecursos.name
 
-#Regla de acceso	
+#Access rule	
 	security_rule {
 		name = "SSH"
 		priority = 1001
@@ -66,12 +66,13 @@ resource "azurerm_network_security_group" "gruposeg" {
 }
 
 
-#Crear una tarjeta de red
+#Create network interface
 resource "azurerm_network_interface" "nic" {
 name = "network-nic"
 location = "West Europe"
 resource_group_name = azurerm_resource_group.gruporecursos.name
 
+#IP configuration of the network interface
 ip_configuration {
 name = "internal"
 subnet_id = azurerm_subnet.subred.id
@@ -80,7 +81,7 @@ public_ip_address_id = azurerm_public_ip.ip_publica.id
 }
 }
 
-#Crear maquina virtual
+#Create virtual machine
 resource "azurerm_linux_virtual_machine" "maquinalinux" {
 name = "maquinalinux"
 resource_group_name = azurerm_resource_group.gruporecursos.name
@@ -92,7 +93,7 @@ azurerm_network_interface.nic.id
 ]
 
 
-#Llave ssh generarla con key autogen y fijarse bien en el archivo que colocamos, el admin_username de la maquina virtual y el username deben coincidir
+#Generate ssh key with key autogen and be careful with the path to the key, username and admin_username from the virtual machine has to match
 admin_ssh_key {
   username = "jccalvo"
   public_key = file("C:/terraform-first-fresh-try/id_rsa.pub")
@@ -105,7 +106,7 @@ os_disk {
 }
 
 
-#Experimento para otro metodo de conexión (no sale bien)	
+#Test with another authentication method (Doesnt work)
 #os_profile {
 #computer_name  = "maquinalinux"
 #admin_username = "intermark"
@@ -117,7 +118,7 @@ os_disk {
 #}
 
 
-#Imagen del sistema operativo
+#Operative System ISO Specifications
 source_image_reference {
 	publisher = "Canonical"
 	offer = "0001-com-ubuntu-server-focal"
