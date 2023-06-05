@@ -1,11 +1,11 @@
-# terraform
-Repo para pruebas y chapuzas con terraform, proximamente kubernetes y cositas
+#terraform
 
-Para el despliegue en azure debemos estar conectados con azure
-az login en powershell
+Test repository for a deployment of a ubuntu 20.04 virtual machine in azure
 
+For the debloyment to be successful we have to be previously logged in azure
+az login in powershell
 
-Importante asociar la red virtual con la nic y crear las reglas para el puerto 22
-IP Publica dejarla en estatico, azure asigna una por defecto
+Its important to associate the virtual network with the virtual interface and create the rules for the 22 port
+Public IP has to be set on static, azure will assign one by default
 
-Generar las claves de ssh y especificarlas en el fichero junto al usuario permitido
+Generate the ssh keys and specify them in the configuration file alongside the allowed user.
